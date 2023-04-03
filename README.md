@@ -1,2 +1,2 @@
-# CalProjectCode
-Cal Project Code
+# Device Code
+Device Code
