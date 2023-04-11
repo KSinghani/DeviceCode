@@ -21,7 +21,7 @@ boolean debug = false;
 double highLowDiff[4];
 
 // Average of min volt signal using 40 values (to increase data accuracy)
-int minAverage[4];
+int min[4];
 
 
 // Arduino Setup function
@@ -87,7 +87,7 @@ int readValues()
       (nmValues[i]+ " Source").toCharArray(disp, 14);
       Paint_DrawString_EN(52, 150, disp , &Font16,  BLACK, STATUS_COLOR);
   
-      // Keep repating until 40 values are read
+      // Keep repeating until 40 values are read
       while(true)
       {
          int value = analogRead(reader);
@@ -104,7 +104,7 @@ int readValues()
          if (count >= 40) // collect 40 values, it will take approx 2 seconds
          {          
            highLowDiff[i]= high - low;
-           minAverage[i] = low;
+           min[i] = low;
            break;
          }
          else
@@ -139,7 +139,7 @@ String calculateResult()
     for ( int i = 0; i < 4; ++i) 
     {
         // Calculate PPG ration for each wavelength 
-        double PPG_Ratio = log(highLowDiff[i]/minAverage[i]);
+        double PPG_Ratio = log(highLowDiff[i]/min[i]);
         
         Hb = Hb + (PPG_Ratio*deoxy_coefficient[i]);
         HbO2 = HbO2 + (PPG_Ratio*oxy_coefficient[i]);
@@ -180,7 +180,7 @@ String calculateResult()
           Serial.println(" displayValue:" + displayValue);
      }
   
-    // Display the value on device's LCD screen 
+    // Display the value of hemoglobin on device's LCD screen in grams/deciliter
     char disp1[14];
     (String(hValue)+" g/dl").toCharArray(disp1, 14);
     char disp[14];
